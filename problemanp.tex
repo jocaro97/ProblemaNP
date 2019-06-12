@@ -11,7 +11,10 @@
 \maketitle
 
 \section*{Problema}
-Un comerciante mantiene una matriz de compras de sus clientes. Hay una fila por cada cliente y una columna por cada producto y en cada entrada $(i,j)$ regustra el número de unidades que el cliente $i$ ha comprado del producto $j$. Un subconjunto $S$ de cliente se llama diverso si nunca dos clientes de $S$ distintos han comprado alguna vez el mismo producto. El problema consiste en dado $K$, determinar si existe un conjunto $S$ de clientes de tamaño $K$ que sea diverso. \\
+Un comerciante mantiene una matriz de compras de sus clientes. Hay una fila por cada cliente y una columna por cada producto y en cada entrada $(i,j)$ registra el número de unidades que el cliente $i$ ha comprado del producto $j$. Un subconjunto $S$ de cliente se llama diverso si nunca dos clientes de $S$ distintos han comprado alguna vez el mismo producto. El problema consiste en dado $K$, determinar si existe un conjunto $S$ de clientes de tamaño $K$ que sea diverso. \\
+\section*{Prueba de que es un problema NP-Completo}
+Para demostrar que es un problema NP-completo realizaremos una reducción del problema \textbf{3SET} en el nuestro.
+
 \begin{center}
 \textbf{3SET} $\propto$ \textbf{Conjunto diverso de clientes} \\
 $X = \{ a_1, \dots, a_{3n} \} \rightarrow  Productos = \{p_1, \dots , p_{3n} \}  $ \\
@@ -19,8 +22,7 @@ $ n \rightarrow K$ \\
 $C = \Big\{ \{ b_{11},b_{12}, b_{13}\} , \dots , \{b_{m1}, b_{m2}, b_{m3} \} \Big\} \rightarrow Clientes = \{ c_1, \dots , c_m \} \}$
 \end{center}
 
-Formamos una tabla, ponemos en las columnas los elementos $a_i$ y en las filas los $b_j$. 
-Por cada $b_j$ marcamos con un 1 cada elementos de X que forman parte del conjunto. Si $b_1 = \{ a_1, a_2, a_4 \} $ entonces la tabla quedaria de la siguiente forma:
+Para construir la tabla del problema de los clientes, las columnas representarán los elementos $a_j$ respectivamente y las filas los respectivos subconjuntos $b_i$. Si el elemento $a_j$ pertence al subconjunto  $b_i$, escribimos un 1 en la casilla $(i,j)$. Si $b_1 = \{ a_1, a_2, a_4 \} $ entonces la tabla quedaria de la siguiente forma:
 \begin{table}[h]
 \centering
 \begin{tabular}{c|c|c|c|c|}
@@ -32,12 +34,16 @@ Por cada $b_j$ marcamos con un 1 cada elementos de X que forman parte del conjun
 \\
 Por lo tanto en el problema del conjunto diverso de clientes, cada cliente siempre tiene asociado 3 productos.
 \\
-\textbf{3SET tiene solución} $\Rightarrow$ \textbf{Conjuntos diverso de clientes tiene solución} \\
+\subsubsection*{3SET tiene solución $\Rightarrow$ Conjuntos diverso de clientes tiene solución}
 Si el problema de 3SET tiene solución significa que existe $C' \subseteq C$ de tamaño $n$ tal que $\cup b_i = X$ con $b_i \cap b_j = \emptyset $ si $b_i, b_j \in C'$ con $i\neq j$. Por lo tanto existe un conjunto de $K$ Clientes tal que sus Productos no coinciden, es decir que si un cliente ha comprado algún producto $p$ ningún otro cliente del conjunto lo ha comprado, lo que implica que este subconjunto $C'$ es diverso, dejando resuelto el problema del Conjunto diverso de clientes.
 \\
-\textbf{Conjuntos diverso de clientes tiene solución} $\Rightarrow$ \textbf{3SET tiene solución} \\ 
+\subsubsection*{Conjuntos diverso de clientes tiene solución $\Rightarrow$ 3SET tiene solución}
 Si el problema del conjunto diverso de clientes tiene solución significa que existe un subconjunto de clientes de tamaño $K$ diverso, esto quiere decir existe $K$ elementos de $C$  tal que $b_i \cap b_j = \emptyset$ si $i \neq j$. Solo nos queda comprobar que $\cup b_i = X$, esto es cierto puesto que $K = n$ por lo tanto hemos elegido $n$ elementos de $C$ de 3 elementos, consiguiendo los $3n$ elementos de $X$.\\
-\section*{Ejemplo}
+
+\subsubsection*{Complejidad en espacio de la reducción}
+Claramente, el obtener el conjunto de productos, el tamaño del conjunto diverso a obtener, y el conjunto de clientes se realiza en espacio logarítmico, pues no es necesario modificar ningun de estos valores una vez escritos. Ahora, como todas las filas de la tabla completamente independientes entre ellas, y al escribir una fila lo hacemos de izquierda a derecha comprobando si el elemento asociado a dicha columna pertenece al subconjunto en cuestión, esto también es espacio logarítmico.
+Por tanto, la reducción se realiza en espacio logarítmico.
+\section*{Ejemplo de la reducción}
 \textbf{3SET} \\
 $X = \{a_1, a_2, a_3, a_4, a_5, a_6, a_7, a_8, a_9\}$ \\
 $C = \Big\{ \{a_1, a_2, a_3 \}, \{a_2, a_3, a_4 \}, \{ a_1, a_5, a_6 \}, \{a_7,a_8,a_9\}, \{a_3,a_6,a_8\} \Big\}$
@@ -48,22 +54,20 @@ $C = \Big\{ \{a_1, a_2, a_3 \}, \{a_2, a_3, a_4 \}, \{ a_1, a_5, a_6 \}, \{a_7,a
 \cline{2-10}
                                                     & $a_1$ & $a_2$ & $a_3$ & $a_4$ & $a_5$ & $a_6$ & $a_7$ & $a_8$ & $a_9$ \\ \hline
 \multicolumn{1}{|c|}{$b_1$}                         & 1     &       & 1     & 1     &       &       &       &       &       \\ \hline
-\rowcolor[HTML]{9AFF99} 
+\rowcolor[HTML]{9AFF99}
 \multicolumn{1}{|l|}{\cellcolor[HTML]{9AFF99}$b_2$} &       & 1     & 1     & 1     &       &       &       &       &       \\ \hline
-\rowcolor[HTML]{9AFF99} 
+\rowcolor[HTML]{9AFF99}
 \multicolumn{1}{|l|}{\cellcolor[HTML]{9AFF99}$b_3$} & 1     &       &       &       & 1     & 1     &       &       &       \\ \hline
-\rowcolor[HTML]{9AFF99} 
+\rowcolor[HTML]{9AFF99}
 \multicolumn{1}{|c|}{\cellcolor[HTML]{9AFF99}$b_4$} &       &       &       &       &       &       & 1     & 1     & 1     \\ \hline
 \multicolumn{1}{|c|}{$b_5$}                         &       &       & 1     &       &       & 1     &       & 1     &       \\ \hline
 \end{tabular}
 \end{table}
 
-
 \textbf{Solución: } $C' = \{ b_2, b_3, b_4 \}$ \\ \\
 \textbf{Conjuntos diverso de clientes} \\
 $Productos = \{a_1, a_2, a_3, a_4, a_5, a_6, a_7, a_8, a_9\}$ \\
 $Clientes = \{b_1, b_2, b_3, b_4, b_5 \}$ \\
-\textbf{Solución: } $C' = \{ b_2, b_3, b_4 \}$ 
-
+\textbf{Solución: } $C' = \{ b_2, b_3, b_4 \}$
 
 \end{document}
